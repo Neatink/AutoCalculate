@@ -10,14 +10,14 @@ print("Press F7 to screenshot/Нажми F7 для скриншота.")
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
-os.makedirs(r'screenshots', exist_ok=True)
+os.makedirs(r'C:\Windows\Temp', exist_ok=True)
 
 def doScreen():
     with mss.mss() as sct:
 
         monitor = {"top": 60, "left": 0, "width": 650, "height": 120}
 
-        output=r"screenshots\\screenshot.png".format(**monitor)
+        output=r"C:\Windows\Temp\\screenshot.png".format(**monitor)
         sct_img = sct.grab(monitor)
 
         mss.tools.to_png(sct_img.rgb, sct_img.size, output=output)
