@@ -44,7 +44,7 @@ def tupping_answer(answer):
     controller.press("y")
     controller.release("y")
 
-    time.sleep(0.01)
+    time.sleep(0.1)
 
     controller.type(str(answer))
 
@@ -52,11 +52,18 @@ def tupping_answer(answer):
     controller.press(keyboard.Key.enter)
     controller.release(keyboard.Key.enter)
 
-screenshot_path = doScreen()
-answer = Solution_Example(screenshot_path)
 
-if answer != None:
-    print(f"Ответ: {answer}")
-    tupping_answer(answer)
-else:
-    print("Не увидел примера")
+def on_press(key):
+    global answer
+    if key == keyboard.Key.f7:
+        screenshot_path = doScreen()
+        answer = Solution_Example(screenshot_path)
+        if answer != None:
+            print(f"Ответ: {answer}")
+            tupping_answer(answer)
+        else:
+            print("Не увидел примера")
+
+
+with keyboard.Listener(on_press=on_press) as listener:
+    listener.join()
