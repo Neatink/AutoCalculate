@@ -6,6 +6,7 @@ import pytesseract
 from PIL import Image
 import re
 
+print("Press F7 to screenshot/Нажми F7 для скриншота.")
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
