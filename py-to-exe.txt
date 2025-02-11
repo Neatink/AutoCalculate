@@ -1,0 +1,1 @@
+pyinstaller --noconfirm --onefile --console --icon "C:\Projects\Python\AutoCalculate\calculator.ico" --name "Calculate" --add-data "C:\Projects\Python\AutoCalculate\calculator.ico;." --add-data "C:\Projects\Python\AutoCalculate\.gitignore;." --add-data "C:\Projects\Python\AutoCalculate\README.md;."  "C:\Projects\Python\AutoCalculate\main.py"
