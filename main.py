@@ -6,6 +6,7 @@ import pytesseract
 from PIL import Image, ImageEnhance, ImageFilter
 import re
 import threading
+import datetime
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 os.makedirs(r'C:\\Windows\\Temp', exist_ok=True)
@@ -36,6 +37,7 @@ def Solution_Example(image_path):
 
 def tupping_answer(answer):
     controller = keyboard.Controller()
+    controller.release(keyboard.Key.shift)
     controller.press("y")
     controller.release("y")
     time.sleep(0.2)
@@ -43,15 +45,21 @@ def tupping_answer(answer):
     controller.press(keyboard.Key.enter)
     controller.release(keyboard.Key.enter)
 
+def Get_Current_Time():
+    current_time = datetime.datetime.now().strftime("%H:%M:%S")
+    return current_time
+
 def always_screen():
+    Cooldown = 2
     answer = Solution_Example(doScreen())
     if answer is not None:
-        print(f"Ответ: {answer}")
+        print(f"[{Get_Current_Time()}]✅ Ответ:{answer}")
         tupping_answer(answer)
+        Cooldown = 5
     else:
-        print("Не увидел примера")
+        print(f"[{Get_Current_Time()}]❌ Не увидел примера")
 
-    threading.Timer(2.0, always_screen).start()
+    threading.Timer(Cooldown, always_screen).start()
     time.sleep(0.1)
 
 def bind_screen():
@@ -60,10 +68,10 @@ def bind_screen():
         if key == keyboard.Key.f7:
             answer = Solution_Example(doScreen())
             if answer is not None:
-                print(f"Ответ: {answer}")
+                print(f"[{Get_Current_Time()}]✅ Ответ:{answer}")
                 tupping_answer(answer)
             else:
-                print("Не увидел примера")
+                print(f"[{Get_Current_Time()}]❌ Не увидел примера")
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
 
