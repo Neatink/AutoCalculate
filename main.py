@@ -39,10 +39,12 @@ def Solution_Example(image_path):
 def tupping_answer(answer):
     controller = keyboard.Controller()
     controller.release(keyboard.Key.shift)
+    time.sleep(0.01)
     controller.press("y")
     controller.release("y")
     time.sleep(0.2)
     controller.type(str(answer))
+    time.sleep(0.01)
     controller.press(keyboard.Key.enter)
     controller.release(keyboard.Key.enter)
 
@@ -56,7 +58,7 @@ def always_screen():
     if answer is not None:
         print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
         tupping_answer(answer)
-        Cooldown = 5
+        Cooldown = 7
     else:
         print(f"[{Get_Current_Time()}]{Fore.RED} Не увидел примера")
 
