@@ -7,6 +7,7 @@ from PIL import Image, ImageEnhance, ImageFilter
 import re
 import threading
 import datetime
+from colorama import init, Fore
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 os.makedirs(r'C:\\Windows\\Temp', exist_ok=True)
@@ -53,31 +54,32 @@ def always_screen():
     Cooldown = 2
     answer = Solution_Example(doScreen())
     if answer is not None:
-        print(f"[{Get_Current_Time()}]✅ Ответ:{answer}")
+        print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
         tupping_answer(answer)
         Cooldown = 5
     else:
-        print(f"[{Get_Current_Time()}]❌ Не увидел примера")
+        print(f"[{Get_Current_Time()}]{Fore.RED} Не увидел примера")
 
     threading.Timer(Cooldown, always_screen).start()
     time.sleep(0.1)
 
 def bind_screen():
-    print("\nPress F7 to screenshot | Нажми F7 для скриншота.")
+    print(f"\n{Fore.CYAN}Press F7 to screenshot {Fore.RESET}| {Fore.MAGENTA}Нажми F7 для скриншота")
     def on_press(key):
         if key == keyboard.Key.f7:
             answer = Solution_Example(doScreen())
             if answer is not None:
-                print(f"[{Get_Current_Time()}]✅ Ответ:{answer}")
+                print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
                 tupping_answer(answer)
             else:
-                print(f"[{Get_Current_Time()}]❌ Не увидел примера")
+                print(f"[{Get_Current_Time()}]{Fore.RED} Не увидел примера")
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
 
 if __name__ == "__main__":
+    init(autoreset=True)
     try:
-        question = int(input("Всегда(BETA)(1) | По бинду(2)\nAlways(BETA)(1) | Bind(2): "))
+        question = int(input(f"{Fore.CYAN}Всегда(BETA)(1) {Fore.RESET}| {Fore.MAGENTA}По бинду(2)\n{Fore.CYAN}Always(BETA)(1) {Fore.RESET}| {Fore.MAGENTA}Bind(2){Fore.RESET}: "))
         if question == 1:
             always_screen()
         elif question == 2:
@@ -86,4 +88,3 @@ if __name__ == "__main__":
             print("Есть варианты: 1 или 2")
     except ValueError as error:
         print(f"Писать можно только числа!")
-
