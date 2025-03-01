@@ -83,7 +83,7 @@ def bind_screen():
 if __name__ == "__main__":
     init(autoreset=True)
     try:
-        question = int(input(f"{Fore.CYAN}Clipboard(3) {Fore.RESET}| {Fore.MAGENTA}Буфер обмена(3)\n{Fore.CYAN}Всегда(2) {Fore.RESET}| {Fore.MAGENTA}Always(2)\n{Fore.CYAN}Бинд(1) {Fore.RESET}| {Fore.MAGENTA}Bind(1){Fore.RESET}: "))
+        question = int(input(f"{Fore.CYAN}Clipboard(3) {Fore.RESET}| {Fore.MAGENTA}Буфер обмена(3)\n{Fore.CYAN}Always(2) {Fore.RESET}| {Fore.MAGENTA}Всегда(2)\n{Fore.CYAN}Bind(1) {Fore.RESET}| {Fore.MAGENTA}Бинд(1){Fore.RESET}: "))
         if question == 1:
             bind_screen()
         elif question == 2:
