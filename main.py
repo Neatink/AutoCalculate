@@ -12,11 +12,11 @@ def get_climboard():
             try:
                 last_text = eval(clipboard.paste())
                 tupping_answer(last_text,1)
-            except SyntaxError:
-                print("Сначала скопируй пример!")
+            except:
+                print(f"[{Get_Current_Time()}]{Fore.RED} Сначала скопируй пример!")
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
-        
+
 def upgrade_image(image_path):
     img = Image.open(image_path).convert('L')
     img = img.filter(ImageFilter.SHARPEN)
@@ -42,6 +42,7 @@ def Solution_Example(image_path):
     return None
 
 def tupping_answer(answer,tupping_count):
+    print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
     controller = keyboard.Controller()
     controller.release(keyboard.Key.shift)
     if tupping_count == 0:
@@ -62,7 +63,6 @@ def always_screen():
     Cooldown = 2
     answer = Solution_Example(doScreen())
     if answer is not None:
-        print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
         tupping_answer(answer,0)
         Cooldown = 8
     else:
@@ -76,7 +76,6 @@ def bind_screen():
         if key == keyboard.Key.f7:
             answer = Solution_Example(doScreen())
             if answer is not None:
-                print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
                 tupping_answer(answer,0)
             else:
                 print(f"[{Get_Current_Time()}]{Fore.RED} Не увидел примера")
