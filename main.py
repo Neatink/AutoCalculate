@@ -9,11 +9,14 @@ os.makedirs(r'C:\\Windows\\Temp', exist_ok=True)
 def get_climboard():
     def on_press(key):
         if key == keyboard.Key.f7:
-            last_text = eval(clipboard.paste())
-            tupping_answer(last_text,1)
+            try:
+                last_text = eval(clipboard.paste())
+                tupping_answer(last_text,1)
+            except SyntaxError:
+                print("Сначала скопируй пример!")
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
-    
+        
 def upgrade_image(image_path):
     img = Image.open(image_path).convert('L')
     img = img.filter(ImageFilter.SHARPEN)
