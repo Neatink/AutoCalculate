@@ -7,9 +7,9 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 os.makedirs(r'C:\\Windows\\Temp', exist_ok=True)
 
 def get_climboard():
-    last_text = eval(clipboard.paste())
     def on_press(key):
         if key == keyboard.Key.f7:
+            last_text = eval(clipboard.paste())
             tupping_answer(last_text,1)
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
