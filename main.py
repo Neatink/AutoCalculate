@@ -1,17 +1,19 @@
-from pynput import keyboard
-import time
-import mss,mss.tools
-import os
-import pytesseract
+import time,os,mss,mss.tools,pytesseract,re,threading,datetime,clipboard
 from PIL import Image, ImageEnhance, ImageFilter
-import re
-import threading
-import datetime
+from pynput import keyboard
 from colorama import init, Fore
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 os.makedirs(r'C:\\Windows\\Temp', exist_ok=True)
 
+def get_climboard():
+    last_text = eval(clipboard.paste())
+    def on_press(key):
+        if key == keyboard.Key.f7:
+            tupping_answer(last_text,1)
+    with keyboard.Listener(on_press=on_press) as listener:
+        listener.join()
+    
 def upgrade_image(image_path):
     img = Image.open(image_path).convert('L')
     img = img.filter(ImageFilter.SHARPEN)
@@ -25,7 +27,7 @@ def doScreen():
         output=r"C:\\Windows\\Temp\\screenshot.png"
         sct_img = sct.grab(monitor)
         mss.tools.to_png(sct_img.rgb, sct_img.size, output=output)
-        return output
+        return output 
 
 def Solution_Example(image_path):
     img = upgrade_image(image_path)
@@ -36,13 +38,14 @@ def Solution_Example(image_path):
         return num1 + num2
     return None
 
-def tupping_answer(answer):
+def tupping_answer(answer,tupping_count):
     controller = keyboard.Controller()
     controller.release(keyboard.Key.shift)
-    time.sleep(0.01)
-    controller.press("y")
-    controller.release("y")
-    time.sleep(0.1)
+    if tupping_count == 0:
+        time.sleep(0.01)
+        controller.press("y")
+        controller.release("y")
+        time.sleep(0.1)
     controller.type(str(answer))
     time.sleep(0.01)
     controller.press(keyboard.Key.enter)
@@ -57,11 +60,10 @@ def always_screen():
     answer = Solution_Example(doScreen())
     if answer is not None:
         print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
-        tupping_answer(answer)
+        tupping_answer(answer,0)
         Cooldown = 8
     else:
         print(f"[{Get_Current_Time()}]{Fore.RED} Не увидел примера")
-
     threading.Timer(Cooldown, always_screen).start()
     time.sleep(0.1)
 
@@ -72,7 +74,7 @@ def bind_screen():
             answer = Solution_Example(doScreen())
             if answer is not None:
                 print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
-                tupping_answer(answer)
+                tupping_answer(answer,0)
             else:
                 print(f"[{Get_Current_Time()}]{Fore.RED} Не увидел примера")
     with keyboard.Listener(on_press=on_press) as listener:
@@ -81,12 +83,14 @@ def bind_screen():
 if __name__ == "__main__":
     init(autoreset=True)
     try:
-        question = int(input(f"{Fore.CYAN}Всегда(BETA)(1) {Fore.RESET}| {Fore.MAGENTA}По бинду(2)\n{Fore.CYAN}Always(BETA)(1) {Fore.RESET}| {Fore.MAGENTA}Bind(2){Fore.RESET}: "))
+        question = int(input(f"{Fore.CYAN}Clipboard(3) {Fore.RESET}| {Fore.MAGENTA}Буфер обмена(3)\n{Fore.CYAN}Всегда(2) {Fore.RESET}| {Fore.MAGENTA}Always(2)\n{Fore.CYAN}Бинд(1) {Fore.RESET}| {Fore.MAGENTA}Bind(1){Fore.RESET}: "))
         if question == 1:
-            always_screen()
-        elif question == 2:
             bind_screen()
+        elif question == 2:
+            always_screen()
+        elif question == 3:
+            get_climboard()
         else:
-            print("Есть варианты: 1 или 2")
-    except ValueError as error:
+            print("Число должно быть из списка выше!")
+    except ValueError:
         print(f"Писать можно только числа!")
