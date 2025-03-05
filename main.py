@@ -14,8 +14,7 @@ def get_climboard():
                 tupping_answer(last_text,1)
             except:
                 print(f"[{Get_Current_Time()}]{Fore.RED} Сначала скопируй пример!")
-    with keyboard.Listener(on_press=on_press) as listener:
-        listener.join()
+    keyboardLister(on_press)
 
 def upgrade_image(image_path):
     img = Image.open(image_path).convert('L')
@@ -43,6 +42,7 @@ def Solution_Example(image_path):
 
 def tupping_answer(answer,tupping_count):
     print(f"[{Get_Current_Time()}]{Fore.GREEN} Ответ{Fore.RESET}:{Fore.LIGHTCYAN_EX}{answer}")
+    clipboard.copy(answer)
     controller = keyboard.Controller()
     controller.release(keyboard.Key.shift)
     if tupping_count == 0:
@@ -79,6 +79,9 @@ def bind_screen():
                 tupping_answer(answer,0)
             else:
                 print(f"[{Get_Current_Time()}]{Fore.RED} Не увидел примера")
+    keyboardLister(on_press)
+
+def keyboardLister(on_press):
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
 
